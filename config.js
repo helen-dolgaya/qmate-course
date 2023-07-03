@@ -5,20 +5,25 @@ exports.config = {
     baseUrl: "https://us4.leverx.local:44302/sap/bc/ui2/flp",
 
     specs: [
-        "./specs/01_create.spec.js",
-        // "./specs/02_checkListReport.spec.js"
+        [
+            "./specs/01_create.spec.js",
+            "./specs/02_checkList.spec.js"
+        ]
     ],
 
-    framework: 'mocha',
-    mochaOpts: {
-        timeout: 1200000,
-        bail: true
+    params: {
+        qmateCustomTimeout: 700000,
+        import: {
+          data:"./data/",
+          purchaseOrder: "./data/purchaseOrder.json"
+        },
+        export: {
+          purchaseOrder: "./data/purchaseOrder.json"
+        }
+  
     },
 
-    maxInstances: 3,
-
-    // services: [[QmateService],['chromedriver']],
-    services: [[QmateService]],
+    maxInstances: 5,
 
     capabilities: [{
         // capabilities for local browser web tests
@@ -43,6 +48,31 @@ exports.config = {
                 "--lang=en-US"
             ]
         }
-    }]
+    }],
+
+    connectionRetryTimeout: 120000,
+    connectionRetryCount: 3,
+    waitForUI5Timeout: 60000,
+
+    //services: [[QmateService],['chromedriver']],
+    services: [[QmateService]],
+
+    framework: 'mocha',
+    mochaOpts: {
+        timeout: 500000,
+        bail: true
+    },
+
+    reporters: [
+        [
+            'spec',
+            {
+                symbols: {
+                    passed: '[PASS]',
+                    failed: '[FAIL]',
+                },
+            },
+        ]
+    ],
 
 };
